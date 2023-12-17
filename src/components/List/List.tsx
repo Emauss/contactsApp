@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import AppContext from "../context/AppContext";
-import ListItem from "./ListItem";
 import { View, StyleSheet } from "react-native";
+import AppContext from "@/context";
+import ListItem from "../ListItem";
 
 const List = () => {
-  const { listItems } = useContext(AppContext);
+  const { contacts } = useContext(AppContext);
 
   return (
     <View style={styles.container}>
-      {listItems.map((label, i) => (
-        <ListItem name={label} index={i} key={i} />
+      {contacts.map((contact, i) => (
+        <ListItem {...contact} index={i} key={i} />
       ))}
     </View>
   );

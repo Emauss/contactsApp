@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import type { ScreenTitleProps } from "./types";
 
 const ScreenTitle = ({ title }: ScreenTitleProps) => {

@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
-import { TouchableHighlight, StyleSheet, View, Alert, TouchableOpacity, Text } from "react-native";
-import AppContext from "../../context/AppContext";
+import { StyleSheet, View, Alert, TouchableOpacity, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { ListItemProps } from "./types";
-
+import AppContext from "@/context";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import type { RootStackParamList } from "@/types";
 
-const ListItem = ({ contactName, phone, favourite, index }: ListItemProps) => {
+const ListItem = (props: ListItemProps) => {
+  const { contactName, favourite, id } = props;
   const { contacts } = useContext(AppContext);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
@@ -24,11 +24,11 @@ const ListItem = ({ contactName, phone, favourite, index }: ListItemProps) => {
     );
   };
 
-  const css = styles({ isLast: contacts.length - 1 === index });
+  const css = styles({ isLast: contacts.length === id });
 
   return (
     <View style={css.container}>
-      <TouchableOpacity style={css.contactCta} onPress={() => navigation.navigate("ContactDetails", { contactName, phone, favourite })}>
+      <TouchableOpacity style={css.contactCta} onPress={() => navigation.navigate("ContactDetails", { ...props })}>
         <Text style={css.contactName}>{contactName}</Text>
         {favourite && <Ionicons name="star" size={20} color="yellow" />}
       </TouchableOpacity>
@@ -39,7 +39,7 @@ const ListItem = ({ contactName, phone, favourite, index }: ListItemProps) => {
   );
 };
 
-const styles = (props?) =>
+const styles = (props) =>
   StyleSheet.create({
     container: {
       paddingBottom: 8,

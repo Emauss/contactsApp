@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TodoList",
-    "slug": "TodoList",
+    "name": "ContactsApp",
+    "slug": "ContactsApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,9 +1,12 @@
 import type { Dispatch } from "react";
 
 export type ContactBox = {
+  id: number;
   contactName: string;
   phone: number;
   favourite?: boolean;
+  mail?: string;
+  note?: string;
 };
 
 export type ContactList = ContactBox[];

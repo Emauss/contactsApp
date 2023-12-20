@@ -1,18 +1,24 @@
 import { View, TextInput, Text, StyleSheet } from "react-native";
 import type { InputProps } from "./types";
 
-const Input = ({ label, value, setValue, inputClass, ...props }: InputProps): JSX.Element => {
+const Input = ({ label, value, setValue, onTextChange, inputClass, ...props }: InputProps): JSX.Element => {
   return (
     <View style={styles.inputWrapper}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput style={[styles.input, inputClass]} value={value} onChangeText={(val) => setValue(val)} autoComplete="off" {...props} />
+      <TextInput
+        style={[styles.input, inputClass]}
+        value={value}
+        onChangeText={onTextChange ? (val) => onTextChange(val) : (val) => setValue(val)}
+        autoComplete="off"
+        {...props}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   inputWrapper: {
-    marginBottom: 8,
+    marginVertical: 8,
   },
   input: {
     borderRightWidth: 0,

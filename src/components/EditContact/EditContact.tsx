@@ -75,7 +75,7 @@ const styles = (editButtonPressed?: boolean) =>
       padding: 10,
       alignItems: "center",
       borderRadius: 10,
-      marginBottom: 20,
+      marginBottom: 10,
     },
     editText: {
       color: "#3388ff",

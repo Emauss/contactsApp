@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, Alert, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { ListItemProps } from "./types";
 import AppContext from "@/context";
@@ -12,18 +12,6 @@ const ListItem = (props: ListItemProps) => {
   const { contacts } = useContext(AppContext);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const handleRemoveItem = () => {
-    // setList((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleConfirmation = () => {
-    Alert.alert(
-      `Jesteś pewny że chcesz usunąć kontakt ${contactName}?`,
-      "Będzie to nieodwracalne działanie, ale zawsze będziesz mógł stworzyć go nowo.",
-      [{ text: "Tak, usuń", onPress: () => handleRemoveItem() }, { text: "Nie, zostaw" }]
-    );
-  };
-
   const css = styles({ isLast: contacts.length === id });
 
   return (
@@ -32,9 +20,6 @@ const ListItem = (props: ListItemProps) => {
         <Text style={css.contactName}>{contactName}</Text>
         {favourite && <Ionicons name="star" size={20} color="yellow" />}
       </TouchableOpacity>
-      {/* <TouchableHighlight onPress={() => handleConfirmation()} style={css.iconWrapper} underlayColor="#DDDDDD">
-        <Ionicons name="trash-outline" size={24} color="red" />
-      </TouchableHighlight> */}
     </View>
   );
 };
@@ -49,9 +34,6 @@ const styles = (props) =>
       alignItems: "center",
       borderBottomWidth: props.isLast ? 0 : 0.5,
       borderBottomColor: "#545454",
-    },
-    iconWrapper: {
-      padding: 4,
     },
     contactCta: {
       flexGrow: 1,

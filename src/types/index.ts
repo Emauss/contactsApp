@@ -25,3 +25,10 @@ export type RootStackParamList = {
   ContactAdd?: ContactBox;
   Home?: ContactBox;
 };
+
+export type FormValues = {
+  contactName: string;
+  phone: string;
+  mail: string;
+  note: string;
+};

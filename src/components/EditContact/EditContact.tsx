@@ -1,37 +1,34 @@
-import type { ContactBox } from "@/types";
+import type { ContactBox, FormValues, SubmitButton } from "@/types";
 import { useContext, useState } from "react";
 import { StyleSheet, View, Pressable, Text, Alert } from "react-native";
 import { toggleEditButton } from "./utils";
 import AppContext from "@/context";
 import { useNavigation } from "@react-navigation/native";
-import Input from "../Input";
+import { Formik } from "formik";
+import { USER_SCHEMA } from "@/constants";
+import FormContent from "../FormContent";
 
 const EditContact = ({ contactName, mail, phone, id, note }: ContactBox) => {
   const navigation = useNavigation();
   const { contacts, setContacts } = useContext(AppContext);
-
+  const initialValues: FormValues = { contactName, phone, mail, note };
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [phoneInput, setPhoneInput] = useState<string>(phone.toString());
-  const [emailInput, setEmailInput] = useState<string>(mail || "");
-  const [noteInput, setNoteInput] = useState<string>(note || "");
 
-  const handleSaveData = () => {
-    const updatedContacts = contacts.map((contact) =>
-      contact.id === id ? { ...contact, phone: parseInt(phoneInput), mail: emailInput, note: noteInput } : contact
-    );
+  const handleSaveData = (values: FormValues) => {
+    const updatedContacts = contacts.map((contact) => (contact.id === id ? { ...contact, ...values } : contact));
     setContacts(updatedContacts);
     toggleEditButton(setEditMode);
     navigation.goBack();
   };
 
-  const handleEditButton = (): void => {
+  const handleEditButton = (values: FormValues): void => {
     if (!editMode) {
       toggleEditButton(setEditMode);
       return;
     }
 
     Alert.alert(`Poczekaj chwilę!`, `Czy jesteś pewny że wprowadziłeś poprawne dane dla kontaktu ${contactName}?`, [
-      { text: "Tak, pewnie", onPress: handleSaveData },
+      { text: "Tak, pewnie", onPress: () => handleSaveData(values) },
       { text: "Nie, poczekaj" },
     ]);
   };
@@ -50,21 +47,23 @@ const EditContact = ({ contactName, mail, phone, id, note }: ContactBox) => {
   };
 
   return (
-    <>
-      <Pressable onPress={handleEditButton} style={({ pressed }) => styles(pressed).editButton}>
-        <Text style={styles().editText}>{editMode ? "Zapisz" : "Edytuj"}</Text>
-      </Pressable>
-      {editMode && (
-        <View>
-          <Input label="Telefon" setValue={setPhoneInput} value={phoneInput} autoComplete="tel" placeholder="Wpisz nr telefonu" />
-          <Input label="E-mail" setValue={setEmailInput} value={emailInput} autoComplete="email" placeholder="Wpisz e-mail" />
-          <Input label="Notatki" multiline inputClass={styles().textArea} setValue={setNoteInput} value={noteInput} placeholder="Notatki..." />
-          <Pressable onPress={handleConfirmation} style={({ pressed }) => [styles(pressed).editButton, styles().removeButton]}>
-            <Text style={[styles().editText, styles().removeText]}>Usuń</Text>
+    <Formik initialValues={initialValues} validationSchema={USER_SCHEMA} onSubmit={(values: FormValues) => handleEditButton(values)}>
+      {(formikProps) => (
+        <>
+          <Pressable onPress={formikProps.handleSubmit as unknown as SubmitButton} style={({ pressed }) => styles(pressed).editButton}>
+            <Text style={styles().editText}>{editMode ? "Zapisz" : "Edytuj"}</Text>
           </Pressable>
-        </View>
+          {editMode && (
+            <View>
+              <FormContent {...formikProps} />
+              <Pressable onPress={handleConfirmation} style={({ pressed }) => [styles(pressed).editButton, styles().removeButton]}>
+                <Text style={[styles().editText, styles().removeText]}>Usuń</Text>
+              </Pressable>
+            </View>
+          )}
+        </>
       )}
-    </>
+    </Formik>
   );
 };
 
@@ -82,13 +81,8 @@ const styles = (editButtonPressed?: boolean) =>
       fontSize: 20,
       textAlign: "center",
     },
-    textArea: {
-      height: 100,
-      textAlignVertical: "top",
-    },
     removeButton: {
       marginTop: 8,
-      marginBottom: 10,
     },
     removeText: {
       color: "red",

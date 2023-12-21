@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import AppContext from "@/context";
 import ListItem from "../ListItem";
+import { compareFunc } from "./utils";
 
 const List = () => {
   const { contacts } = useContext(AppContext);
@@ -12,7 +13,7 @@ const List = () => {
 
   return (
     <View style={styles.container}>
-      {contacts?.map((contact, i) => (
+      {contacts.sort(compareFunc)?.map((contact, i) => (
         <ListItem {...contact} index={i} key={i} />
       ))}
     </View>

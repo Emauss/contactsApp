@@ -1,16 +1,15 @@
 import { Formik } from "formik";
-import * as Yup from "yup";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import React, { useContext } from "react";
-import { Text, TouchableHighlight, View, StyleSheet, Pressable, GestureResponderEvent, KeyboardAvoidingView, Platform } from "react-native";
+import { Text, TouchableHighlight, View, StyleSheet, Pressable, KeyboardAvoidingView, Platform } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import type { ContactBox, FormValues, RootStackParamList } from "@/types";
+import type { ContactBox, FormValues, RootStackParamList, SubmitButton } from "@/types";
 import type { StackNavigationProp } from "@react-navigation/stack";
 import AppContext from "@/context";
 import ScreenTitle from "@/components/ScreenTitle";
-import Input from "@/components/Input";
-import { USER_SCHEMA } from "@/constants";
+import { EMAIL_REGEX, USER_SCHEMA } from "@/constants";
+import FormContent from "@/components/FormContent";
 
 const ContactAdd = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -18,8 +17,9 @@ const ContactAdd = () => {
   const { contacts, setContacts } = useContext(AppContext);
 
   const handleAddContact = (values: FormValues) => {
-    const newContactData: ContactBox = { id: contacts.length + 1, ...values, phone: Number(values.phone) };
+    const newContactData: ContactBox = { id: contacts.length + 1, ...values };
     setContacts((prev) => [...prev, newContactData]);
+
     navigation.goBack();
   };
 
@@ -35,56 +35,11 @@ const ContactAdd = () => {
             <Ionicons contactName="add-outline" size={26} color="#3388ff" />
           </View>
         </View>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={USER_SCHEMA}
-          onSubmit={(values: FormValues) => handleAddContact(values)}
-          // validator={userSchema}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+        <Formik initialValues={initialValues} validationSchema={USER_SCHEMA} onSubmit={(values: FormValues) => handleAddContact(values)}>
+          {(formikProps) => (
             <>
-              <Input
-                label="Imię i nazwisko"
-                onTextChange={handleChange("contactName")}
-                value={values.contactName}
-                autoComplete="name"
-                placeholder="Imię i nazwisko"
-                onBlur={handleBlur("contactName")}
-              />
-              {errors.contactName && <Text style={styles().errorText}>{errors.contactName}</Text>}
-              <Input
-                label="Telefon"
-                onTextChange={handleChange("phone")}
-                value={values.phone.toString()}
-                autoComplete="tel"
-                placeholder="Wpisz nr telefonu"
-                onBlur={handleBlur("phone")}
-                keyboardType="numeric"
-                inputMode="numeric"
-              />
-              {errors.phone && <Text style={styles().errorText}>{errors.phone}</Text>}
-              <Input
-                label="E-mail"
-                onTextChange={handleChange("mail")}
-                value={values.mail}
-                autoComplete="email"
-                placeholder="Dodaj e-mail"
-                onBlur={handleBlur("mail")}
-              />
-              {errors.mail && <Text style={styles().errorText}>{errors.mail}</Text>}
-              <Input
-                label="Notatki"
-                multiline
-                inputClass={styles().textArea}
-                onTextChange={handleChange("note")}
-                value={values.note}
-                placeholder="Notatki..."
-                onBlur={handleBlur("note")}
-              />
-              <Pressable
-                onPress={handleSubmit as unknown as (e: GestureResponderEvent) => void}
-                style={({ pressed }) => styles(pressed).submitButton}
-              >
+              <FormContent {...formikProps} />
+              <Pressable onPress={formikProps.handleSubmit as unknown as SubmitButton} style={({ pressed }) => styles(pressed).submitButton}>
                 <Text style={styles().submitText}>Dodaj</Text>
               </Pressable>
             </>
@@ -126,11 +81,6 @@ const styles = (pressed?: boolean) =>
       fontSize: 20,
       textAlign: "center",
     },
-    textArea: {
-      height: 100,
-      textAlignVertical: "top",
-    },
-    errorText: { fontSize: 10, color: "red" },
   });
 
 export default ContactAdd;

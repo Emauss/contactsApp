@@ -41,8 +41,8 @@ const ContactDetails = ({ route }) => {
         </View>
         <ScreenTitle title={contactName} />
         <View style={styles.actions}>
-          <ActionBox title="Wiadomość" icon="chatbubble" onPress={() => Linking.openURL(`sms:${phone}`)} key={`${phone}-sms`} />
-          <ActionBox title="Zadzwoń" icon="call" onPress={() => Linking.openURL(`tel:${phone}`)} key={`${phone}-call`} />
+          <ActionBox title="Wiadomość" icon="chatbubble" onPress={() => Linking.openURL(`sms:${phone.replace(/ /g, "")}`)} key={`${phone}-sms`} />
+          <ActionBox title="Zadzwoń" icon="call" onPress={() => Linking.openURL(`tel:${phone.replace(/ /g, "")}`)} key={`${phone}-call`} />
           <ActionBox title="Email" icon="mail" isDisabled={!mail} onPress={() => Linking.openURL(`mailto:${mail}`)} />
           <ActionBox title="Wideo" icon="videocam" isDisabled />
         </View>

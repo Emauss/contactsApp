@@ -1,9 +1,10 @@
 import type { Dispatch } from "react";
+import { GestureResponderEvent } from "react-native";
 
 export type ContactBox = {
   id: number;
   contactName: string;
-  phone: number;
+  phone: string;
   favourite?: boolean;
   mail?: string;
   note?: string;
@@ -32,3 +33,5 @@ export type FormValues = {
   mail: string;
   note: string;
 };
+
+export type SubmitButton = (e: GestureResponderEvent) => void;

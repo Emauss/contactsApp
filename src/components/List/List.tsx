@@ -8,7 +8,7 @@ const List = () => {
   const { contacts } = useContext(AppContext);
 
   if (!contacts.length) {
-    return <Text style={styles.noContacts}>Nie masz żadnych kontaktów. Dodaj za pomocą ikony w prawym górnym rogu</Text>;
+    return <Text style={[styles.container, styles.noContacts]}>Nie masz żadnych kontaktów. Dodaj za pomocą ikony w prawym górnym rogu</Text>;
   }
 
   return (

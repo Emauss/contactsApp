@@ -11,8 +11,6 @@ export const INITIAL_CONTACT_VALUE: ContactList = [
 
 const PHONE_REGEX = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 // Handling form validation
 export const USER_SCHEMA = Yup.object({
   contactName: Yup.string().required("Imię i nazwisko jest wymagane"),

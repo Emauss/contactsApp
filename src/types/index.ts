@@ -1,5 +1,5 @@
 import type { Dispatch } from "react";
-import { GestureResponderEvent } from "react-native";
+import type { GestureResponderEvent } from "react-native";
 
 export type ContactBox = {
   id: number;

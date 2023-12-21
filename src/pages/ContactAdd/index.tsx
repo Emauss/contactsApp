@@ -8,7 +8,7 @@ import type { ContactBox, FormValues, RootStackParamList, SubmitButton } from "@
 import type { StackNavigationProp } from "@react-navigation/stack";
 import AppContext from "@/context";
 import ScreenTitle from "@/components/ScreenTitle";
-import { EMAIL_REGEX, USER_SCHEMA } from "@/constants";
+import { USER_SCHEMA } from "@/constants";
 import FormContent from "@/components/FormContent";
 
 const ContactAdd = () => {
